@@ -93,6 +93,7 @@ import useCurrencyInfo from "../../hooks/useCurrencyInfo";
 const Product = ({ product }) => {
   const dispatch = useDispatch();
   const [currency, setCurrency] = useState("usd");
+  const [quantity, setQuantity] = useState(1);
   const [amount, setAmount] = useState(product.price);
   const [options, setOptions] = useState([]);
   const currencies = useCurrencyInfo(currency);
@@ -140,11 +141,40 @@ const Product = ({ product }) => {
           </svg>
         </a>
         <div className="mt-4 px-5 pb-5">
-          <a href="#">
+          <div className="flex justify-between">
             <h5 className="text-xl tracking-tight text-white">
               {product.title}
             </h5>
-          </a>
+            <div class="flex items-center border-gray-100">
+              <span
+                onClick={() => {
+                  if (quantity > 1) {
+                    setQuantity(quantity - 1);
+                  }
+                }}
+                class="cursor-pointer rounded-l bg-gray-400 font-bold py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
+              >
+                {" "}
+                -{" "}
+              </span>
+              <input
+                class="h-8 w-8 border bg-gray-600 font-bold text-white text-center text-xs outline-none"
+                type="number"
+                value={quantity}
+                disabled
+                min="1"
+              />
+              <span
+                onClick={() => {
+                  setQuantity(quantity + 1);
+                }}
+                class="cursor-pointer rounded-r bg-gray-400 font-bold py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
+              >
+                {" "}
+                +{" "}
+              </span>
+            </div>
+          </div>
           <div className="mt-2 mb-5 flex items-center justify-between">
             <p>
               <span className="text-3xl font-bold text-white">
@@ -188,7 +218,7 @@ const Product = ({ product }) => {
             onClick={() => {
               const productToAdd = {
                 product: product,
-                quantity: 1,
+                quantity: quantity,
               };
               dispatch(addToCart(productToAdd));
               toast.success("Added to Cart");

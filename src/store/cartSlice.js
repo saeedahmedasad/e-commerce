@@ -9,16 +9,12 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      // for (let i = 0; i < state.cart.length; i++) {
-      //   if (state.cart[i].product.id === action.payload.product.id) {
-      //     console.log("in IF");
-      //     found = true;
-      //     state.cart[i].quantity += 1;
-      //     return;
-      //   }
-      // }
-      // console.log("outside IF");
-
+      for (let i = 0; i < state.cart.length; i++) {
+        if (state.cart[i].product.id === action.payload.product.id) {
+          state.cart[i] = action.payload;
+          return;
+        }
+      }
       state.cart.push(action.payload);
     },
     removeFromCart: (state, action) => {
